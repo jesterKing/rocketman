@@ -1,11 +1,8 @@
 PHABRICATOR_ROOT_URL =  '< Complete url of the phabricator instance, ex: "http://phab.example.com/" >'
-LAST_BLOG_ID = '< Integer denoting the last blog id, ex: if "http://phab.example.com/J2" is the most recent blog, then set this to "2" >'
-
 
 class Script {
 
     constructor() {
-        this.mostRecentBlogId = parseInt(LAST_BLOG_ID)
     }
 
     /**
@@ -16,7 +13,6 @@ class Script {
         // Regexes for finding different Phabricator objects
         var maniphestRegex = /\b(T\d+):/ig;
         var differentialRegex = /\b(D\d+):/ig;
-        var phameRegex = /\bpublished (Blog Post):/ig;
         var diffusionRegex = /\b(R(?:\d+:|[a-z]{1,10})[0-9a-f]{10,40}):/ig;
 
         var text = request.content.storyText;
@@ -31,14 +27,6 @@ class Script {
         if (differentialMatch) {
             var replaceText = `[${differentialMatch[1]}](${PHABRICATOR_ROOT_URL + differentialMatch[1]})`
             text = text.replace(differentialMatch[1], replaceText);
-        }
-
-        var phameMatch = phameRegex.exec(text);
-        if (phameMatch) {
-            var nextBlogId = this.mostRecentBlogId + 1
-            var replaceText = `[${phameMatch[1]}](${PHABRICATOR_ROOT_URL + 'J' + nextBlogId})`
-            text = text.replace(phameMatch[1], replaceText)
-            this.mostRecentBlogId = nextBlogId
         }
 
         var diffusionMatch = diffusionRegex.exec(text);
