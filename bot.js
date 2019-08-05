@@ -1,4 +1,4 @@
-PHABRICATOR_ROOT_URL =  '< Complete url of the phabricator instance, ex: "http://phab.example.com/" >'
+PHABRICATOR_ROOT_URL =  'https://developer.blender.org'
 
 class Script {
 
